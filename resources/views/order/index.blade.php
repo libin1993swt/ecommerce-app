@@ -41,7 +41,8 @@
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-danger btn-sm" type="submit">Delete</button>
-                  </form>
+                </form>
+                <a href="{{ route('orders.invoice', $order->id) }}" class="btn btn-warning btn-sm">Invoice</a>
             </td>
         </tr>
         @empty

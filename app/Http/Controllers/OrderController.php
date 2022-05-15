@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderDetail;
@@ -137,5 +138,24 @@ class OrderController extends Controller
             $orderDetails->save();
         }
         
+    }
+
+    /**
+     * Generate invoice for order.
+     */
+    public function generateInvoice($id)
+    {
+        $order = Order::findOrFail($id);
+        $orderDetails = OrderDetail::with('product')->where('order_id',$id)->get();
+
+        $details = DB::table('orders')
+        ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+        ->join('products', 'products.id', '=', 'order_details.product_id')
+        ->select('orders.*', 'order_details.quantity', 'products.name', 'products.price',DB::raw('(products.price*order_details.quantity) AS net_total'))
+        ->where('orders.id',$id)
+        ->get();
+        $netTotal = $details->sum('net_total');
+
+        return view('order.invoice', compact('order','orderDetails','netTotal'));
     }
 }

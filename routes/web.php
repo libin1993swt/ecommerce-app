@@ -20,4 +20,6 @@ Route::get('/', function () {
 });
 
 Route::resource('products', ProductController::class);
+Route::get('orders/invoice/{id}',[OrderController::class, 'generateInvoice'])->name('orders.invoice');;
 Route::resource('orders', OrderController::class);
+

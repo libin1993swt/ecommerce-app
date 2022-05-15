@@ -19,4 +19,12 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    /**
+     * Get the order details for order.
+     */
+    public function order()
+    {
+        return $this->hasMany(OrderDetail::class);
+    }
 }

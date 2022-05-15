@@ -19,4 +19,13 @@ class Order extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    /**
+     * Get the order details for order.
+     */
+    public function order_details()
+    {
+        return $this->hasMany(OrderDetail::class);
+    }
+
 }
