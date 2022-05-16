@@ -1,13 +1,6 @@
 @extends('layout')
 @section('content')
-<style>
-  .push-top {
-    margin-top: 50px;
-  }
-</style>
-<div>
-    <a href="{{ route('orders.create') }}" class="btn">Add Order</a>
-</div>
+
 <div class="push-top">
   @if(session()->get('success'))
     <div class="alert alert-success">
@@ -16,6 +9,11 @@
   @endif
   <table class="table">
     <thead>
+        <tr>
+          <td colspan="7" style='text-align:center; vertical-align:middle'>
+            <a href="{{ route('orders.create') }}" class="btn btn-success">Add Order</a>
+          </td>
+        </tr>
         <tr class="table-warning">
           <td>ID</td>
           <td>Order Id</td>
