@@ -88,7 +88,7 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $orderId)
     {
         $request->validate([
             'customer_name' => 'required|max:255',
@@ -100,7 +100,7 @@ class OrderController extends Controller
         if($request->has('customer_id') && $request->customer_id != null) {
             $customerId = $this->saveCustomer($request,$request->customer_id);
         }
-
+        $this->saveOrderDetails($request,$orderId);
         return redirect('/orders')->with('completed', 'Order has been deleted');
     }
 
@@ -152,8 +152,15 @@ class OrderController extends Controller
     {
         $quantities = $request->quantity;
         $productsId = $request->product_id;
+        if($request->has('order_details_id')) {
+            $orderDetailsId = $request->order_details_id;
+        }
         foreach($quantities as $key => $quantity) {
-            $orderDetails = new OrderDetail();
+            if(isset($orderDetailsId[$key]) && $orderDetailsId[$key] != null){
+                $orderDetails = OrderDetail::findOrFail($orderDetailsId[$key]);
+            } else {
+                $orderDetails = new OrderDetail();
+            }
             $orderDetails->order_id = $orderId;
             $orderDetails->product_id = $productsId[$key];
             $orderDetails->quantity = $quantity;
