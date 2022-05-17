@@ -19,6 +19,9 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::with('customer')->get();
+        foreach($orders as $key => $order) {
+            $order->net_total = $this->invoiceNetTotal($order->id); 
+        }
         return view('order.index', compact('orders'));
     }
 
@@ -148,6 +151,15 @@ class OrderController extends Controller
         $order = Order::findOrFail($id);
         $orderDetails = OrderDetail::with('product')->where('order_id',$id)->get();
 
+        $netTotal = $this->invoiceNetTotal($id);
+
+        return view('order.invoice', compact('order','orderDetails','netTotal'));
+    }
+
+    /**
+     * Get invoice net total
+     */
+    public function invoiceNetTotal($id) {
         $details = DB::table('orders')
         ->join('order_details', 'orders.id', '=', 'order_details.order_id')
         ->join('products', 'products.id', '=', 'order_details.product_id')
@@ -155,7 +167,6 @@ class OrderController extends Controller
         ->where('orders.id',$id)
         ->get();
         $netTotal = $details->sum('net_total');
-
-        return view('order.invoice', compact('order','orderDetails','netTotal'));
+        return $netTotal;
     }
 }

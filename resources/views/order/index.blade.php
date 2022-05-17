@@ -31,7 +31,7 @@
             <td>{{$order->id}}</td>
             <td>{{$order->customer->name}}</td>
             <td>{{$order->customer->phone}}</td>
-            <td>{{$order->customer->phone}}</td>
+            <td>{{$order->net_total}}</td>
             <td>{{ date('d M Y',strtotime($order->date)) }}</td>
             <td class="text-center">
                 <a href="{{ route('orders.edit', $order->id)}}" class="btn btn-primary btn-sm">Edit</a>
