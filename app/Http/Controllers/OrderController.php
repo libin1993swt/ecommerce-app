@@ -76,7 +76,9 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        //
+        $order = Order::with('customer','order_details')->findOrFail($id);
+        $products = Product::orderBy('name')->get();
+        return view('order.create', compact('products','order'));
     }
 
     /**
@@ -88,7 +90,18 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'customer_name' => 'required|max:255',
+            'phone' => 'required|digits:10',
+            'product.*' => 'required|numeric',
+            'quantity.*' => 'required|numeric|max:10',
+        ]);
+        
+        if($request->has('customer_id') && $request->customer_id != null) {
+            $customerId = $this->saveCustomer($request,$request->customer_id);
+        }
+
+        return redirect('/orders')->with('completed', 'Order has been deleted');
     }
 
     /**
@@ -107,9 +120,13 @@ class OrderController extends Controller
     /**
      * Save customer details
      */
-    public function saveCustomer($request)
+    public function saveCustomer($request,$customerId = null)
     {
-        $customer = new Customer();
+        if($customerId != null) {
+            $customer = Customer::findOrFail($customerId);
+        } else {
+            $customer = new Customer();
+        }
         $customer->name = $request->customer_name;
         $customer->phone = $request->phone;
         $customer->save();

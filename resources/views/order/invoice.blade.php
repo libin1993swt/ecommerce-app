@@ -10,7 +10,7 @@
             <td>Products</td>
             <td>
                 @forelse($orderDetails as $key => $details)
-                    {{ ++$key }}.{{ $details->product->name }} x {{ $details->quantity }} = {{ $details->product->price * $details->quantity  }} <?php echo "<br>"; ?>
+                {{ ++$key }}.{{ $details->product->name }} x {{ $details->quantity }} = {{ $details->product->price * $details->quantity  }} <?php echo "<br>"; ?>
                 @empty
                 @endforelse
             </td>
