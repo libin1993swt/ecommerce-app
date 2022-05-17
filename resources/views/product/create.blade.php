@@ -58,7 +58,13 @@
               <label for="price">Price</label>
               <input type="text" class="form-control" name="price" value="{{ isset($product->price) ? $product->price : '' }}"/>
           </div>
-          <button type="submit" class="btn btn-block btn-danger">Add Product</button>
+          <button type="submit" class="btn btn-block btn-danger">
+          @if(isset($product->id))
+            Update Product
+          @else
+            Add Product
+          @endif
+          </button>
       </form>
   </div>
 </div>

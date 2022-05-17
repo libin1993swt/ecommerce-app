@@ -48,7 +48,7 @@ class OrderController extends Controller
             'customer_name' => 'required|max:255',
             'phone' => 'required|digits:10',
             'product.*' => 'required|numeric',
-            'quantity.*' => 'required|numeric|max:10',
+            'quantity.*' => 'required|numeric|max:10|gt:0',
         ]);
 
         $customerId = $this->saveCustomer($request);
@@ -94,7 +94,7 @@ class OrderController extends Controller
             'customer_name' => 'required|max:255',
             'phone' => 'required|digits:10',
             'product.*' => 'required|numeric',
-            'quantity.*' => 'required|numeric|max:10',
+            'quantity.*' => 'required|numeric|max:10|gt:0',
         ]);
         
         if($request->has('customer_id') && $request->customer_id != null) {

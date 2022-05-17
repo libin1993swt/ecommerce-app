@@ -42,7 +42,7 @@ class ProductController extends Controller
             'name' => 'required|max:255',
             'image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
             'category_id' => 'required|numeric',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|gt:0',
         ]);
 
         $filePath = $this->fileUpload($request);
@@ -94,7 +94,7 @@ class ProductController extends Controller
             'name' => 'required|max:255',
             'image' => 'sometimes|image|mimes:jpeg,jpg,png|max:2048',
             'category_id' => 'required|numeric',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|gt:0',
         ]);
 
         if($request->has('image')) {
